@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "My First Project.sln"
+    "dotnet.defaultSolution": "My-First-Unity-Project.sln"
 }
