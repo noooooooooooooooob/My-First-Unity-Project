@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class HpTestScript : HPController
 {
+    public SkillManager skillManager;
+
+    void Start(){
+        skillManager = GetComponent<SkillManager>();
+    }
     
     void Update()
     {
@@ -14,6 +19,11 @@ public class HpTestScript : HPController
         {
             Debug.Log("Heal");
             Heal(10);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Debug.Log("Add Point");
+            skillManager.addPoint(1);
         }
         if(Hp==0){
             GameOver();

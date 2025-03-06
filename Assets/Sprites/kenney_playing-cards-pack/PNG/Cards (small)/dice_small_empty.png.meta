@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      dice_small_empty_0: 4350926344996295561
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
