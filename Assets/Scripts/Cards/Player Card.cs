@@ -58,7 +58,7 @@ public class PlayerCard : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("TargetZone"))
+        if (collision.tag== "TargetZone" && collision.GetComponent<CardZone>().getType() == type)
         {
             isInTargetZone = false;
         }
