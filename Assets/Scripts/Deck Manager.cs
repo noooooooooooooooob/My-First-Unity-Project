@@ -3,7 +3,7 @@ using UnityEngine;
 public class DeckManager : MonoBehaviour
 {
     // 0: 하트, 1: 다이아몬드, 2: 클로버, 3: 스페이드
-    public static int[][] deck = new int[4][];
+    public int[][] deck = new int[4][];
 
     void Awake()
     {

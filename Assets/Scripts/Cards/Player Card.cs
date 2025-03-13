@@ -47,22 +47,22 @@ public class PlayerCard : MonoBehaviour
     }
 
     private void cardDraw(){
-        // 카드 타입과 숫자 설정
-        // while(true)
-        // {
-        //     type = (Type)Random.Range(0, 4);
-        //     value = Random.Range(1, 11);
-        //     if(deckManager.deck[(int)type][value]>0){
-        //         break;
-        //     }   
-        // }
-        type = (Type)Random.Range(0, 4);
-        value = Random.Range(1, 11);
         StartCoroutine(drawCourutine());
     }
     IEnumerator drawCourutine(){
         yield return new WaitForSeconds(0.5f);
-        cardDraw();
+        // 카드 타입과 숫자 설정
+        while(true)
+        {
+            type = (Type)Random.Range(0, 4);
+            value = Random.Range(1, 11);
+            if(deckManager.deck[(int)type][value]>0){
+                break;
+            }   
+        }
+        type = (Type)Random.Range(0, 4);
+        value = Random.Range(1, 11);
+        deckManager.CardDrawed(type,value);
     }
 
     private int GetSpriteIndex(Type cardType, int cardValue)
