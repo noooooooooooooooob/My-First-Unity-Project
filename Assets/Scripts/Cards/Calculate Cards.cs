@@ -6,8 +6,8 @@ public class CalculateCards : MonoBehaviour
 {
     Dictionary<Type, List<int>> cardTypeNumbers = new Dictionary<Type, List<int>>();
     // 족보 우선순위 설정
-    string bestHand = "High Card"; // 기본값
-    int bestRank = 1; // 기본값 (가장 낮은 족보)
+    public string bestHand = "High Card"; // 기본값
+    public int bestRank = 1; // 기본값 (가장 낮은 족보)
 
     private void ResetCalculate()
     {

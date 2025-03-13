@@ -13,7 +13,7 @@ public class PlayerCard : MonoBehaviour
     private int defaultTargetValue;
     private Sprite[] sprites;
     private SpriteRenderer spriteRenderer;
-    void Awake()
+    void OnEnable()
     {
         // 카드 타입과 숫자 설정
         type = (Type)Random.Range(0, 4);
@@ -138,5 +138,9 @@ public class PlayerCard : MonoBehaviour
     public void OnReset()
     {
         transform.position = defaultPos;
+    }
+    public void ReDraw(){
+        gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 }
