@@ -58,7 +58,7 @@ public class PlayerCard : MonoBehaviour
             value = Random.Range(1, 11);
             if(deckManager.deck[(int)type][value]>0){
                 break;
-            }   
+            }
         }
         type = (Type)Random.Range(0, 4);
         value = Random.Range(1, 11);
