@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerCard : MonoBehaviour
@@ -13,11 +14,19 @@ public class PlayerCard : MonoBehaviour
     private int defaultTargetValue;
     private Sprite[] sprites;
     private SpriteRenderer spriteRenderer;
+    public GameObject stageManager;
+    public DeckManager deckManager;
+
+    void Awake()
+    {
+        cam = Camera.main; // 메인 카메라 참조
+        defaultPos = transform.position;
+        stageManager = GameObject.Find("Stage Manager");
+        deckManager = stageManager.GetComponent<DeckManager>();
+    }
     void OnEnable()
     {
-        // 카드 타입과 숫자 설정
-        type = (Type)Random.Range(0, 4);
-        value = Random.Range(1, 11);
+        cardDraw();
 
         // 스프라이트 로드
         sprites = Resources.LoadAll<Sprite>("Sprites/kenney_playing-cards-pack/PNG/Cards (large)");
@@ -37,6 +46,25 @@ public class PlayerCard : MonoBehaviour
         }
     }
 
+    private void cardDraw(){
+        // 카드 타입과 숫자 설정
+        // while(true)
+        // {
+        //     type = (Type)Random.Range(0, 4);
+        //     value = Random.Range(1, 11);
+        //     if(deckManager.deck[(int)type][value]>0){
+        //         break;
+        //     }   
+        // }
+        type = (Type)Random.Range(0, 4);
+        value = Random.Range(1, 11);
+        StartCoroutine(drawCourutine());
+    }
+    IEnumerator drawCourutine(){
+        yield return new WaitForSeconds(0.5f);
+        cardDraw();
+    }
+
     private int GetSpriteIndex(Type cardType, int cardValue)
     {
         int baseIndex = 0;
@@ -50,11 +78,7 @@ public class PlayerCard : MonoBehaviour
         return baseIndex + (cardValue - 1);
     }
 
-    void Start()
-    {
-        cam = Camera.main; // 메인 카메라 참조
-        defaultPos = transform.position;
-    }
+    
 
     void OnMouseDown()
     {
