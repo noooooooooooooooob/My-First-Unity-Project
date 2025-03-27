@@ -5,6 +5,7 @@ using TMPro;
 public class EnemyHpContoller : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI Text; // HP 표시를 위한 Text
+    public GameObject gameClearUI;
     // 플레이어의 HP
     private int _hp;
     private int _maxHp = 100; // HP의 최대값을 따로 설정
@@ -43,6 +44,7 @@ public class EnemyHpContoller : MonoBehaviour
         Text.text = _hp + " / " + _maxHp;
     }
     public void EnemyDie(){
+        gameClearUI.SetActive(true);
         Destroy(gameObject);
     }
 }
