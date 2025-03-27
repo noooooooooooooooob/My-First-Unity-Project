@@ -8,13 +8,16 @@ public class StageManager : MonoBehaviour
     public GameObject Player;
     public Player player;
     public EnemyHpContoller enemyHpContoller;
+    public DeckManager deckManager;
 
     void Start()
     {
         Enemy = GameObject.Find("Enemy");
         Player = GameObject.Find("Player");
         enemyHpContoller = Enemy.GetComponent<EnemyHpContoller>();
+        deckManager = GetComponent<DeckManager>();
         player = Player.GetComponent<Player>();
+        deckManager.DrawCard(6);
     }
     public void StartTurn() // Click START BUTTON
     {
@@ -43,11 +46,12 @@ public class StageManager : MonoBehaviour
                 Debug.Log("SPADE " + cardzone.cardValue);
             }
         }
+        
         foreach (PlayerCard card in allCards)
         {
-            card.OnReset();
-            card.ReDraw();
+            card.destroyCard();
         }
+        deckManager.DrawCard(6);
         calculateCards.bestRank = 1;
         calculateCards.bestHand = "High Card";
         calculateCards.CalculateAllCards();

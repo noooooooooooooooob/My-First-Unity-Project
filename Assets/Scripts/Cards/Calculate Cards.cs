@@ -8,6 +8,8 @@ public class CalculateCards : MonoBehaviour
     // 족보 우선순위 설정
     public string bestHand = "High Card"; // 기본값
     public int bestRank = 1; // 기본값 (가장 낮은 족보)
+    // 테스트 플레이어
+    public GameObject player;
 
     private void ResetCalculate()
     {
@@ -17,6 +19,15 @@ public class CalculateCards : MonoBehaviour
     void Start() // Test
     {
         CalculateAllCards();
+
+        // 테스트 플레이어
+        player = GameObject.Find("Player");
+        
+    }
+    void Update()
+    {
+        // 테스트 플레이어
+        player.GetComponent<Player>().setMultiply(bestRank);
     }
 
     public int CalculateAllCards() // 족보에 따른 배수를 반환

@@ -1,52 +1,71 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class DeckManager : MonoBehaviour
 {
-    // 0: 하트, 1: 다이아몬드, 2: 클로버, 3: 스페이드
-    public int[][] deck = new int[4][];
+    private List<Card> deck = new List<Card>();
+
+    public GameObject cardPrefab;
+    public Transform[] drawPosition;
+    int cnt = 0;
 
     void Awake()
     {
+        InitializeDeck();
+        ShuffleDeck();
+    }
 
-        for (int i = 0; i < 4; i++)
+    void InitializeDeck()
+    {
+        deck.Clear();
+        for (int suit = 0; suit < 4; suit++)
         {
-            deck[i] = new int[11]; // 카드 번호는 0~10까지
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 11; j++)
+            for (int value = 1; value <= 10; value++) // 1~10까지만 사용
             {
-                deck[i][j] = 1;
+                deck.Add(new Card((Type)suit, value));
             }
         }
     }
 
-    public void CardDrawed(Type type, int value)
+    void ShuffleDeck()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < deck.Count; i++)
         {
-            if (deck[i] == null)
-            {
-                Debug.Log("Deck is NULL!!");
-                return;
-            }
+            Card temp = deck[i];
+            int randomIndex = Random.Range(i, deck.Count);
+            deck[i] = deck[randomIndex];
+            deck[randomIndex] = temp;
         }
+    }
 
-        switch (type)
+    public void DrawCard(int count)
+    {
+        if (deck.Count == 0)
         {
-            case Type.HEART:
-                deck[0][value]--;
-                break;
-            case Type.DIAMOND:
-                deck[1][value]--;
-                break;
-            case Type.CLOVER:
-                deck[2][value]--;
-                break;
-            case Type.SPADE:
-                deck[3][value]--;
-                break;
+            Debug.Log("Deck is empty!");
+            return;
         }
+        while (count-->0)
+        {
+            Card drawnCard = deck[0];
+            deck.RemoveAt(0);
+
+            GameObject newCardObj = Instantiate(cardPrefab, drawPosition[cnt++].position, Quaternion.identity);
+            PlayerCard playerCard = newCardObj.GetComponent<PlayerCard>();
+            playerCard.Initialize(drawnCard.type, drawnCard.value);
+        }
+        cnt=0;
+    }
+}
+
+public class Card
+{
+    public Type type;
+    public int value;
+
+    public Card(Type type, int value)
+    {
+        this.type = type;
+        this.value = value;
     }
 }

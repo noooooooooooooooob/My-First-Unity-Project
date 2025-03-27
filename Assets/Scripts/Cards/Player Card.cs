@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCard : MonoBehaviour
@@ -9,33 +10,44 @@ public class PlayerCard : MonoBehaviour
     private Vector3 defaultPos;
     private Vector3 offset;
     private Camera cam;
-    [SerializeField] private bool isInTargetZone;   
+    [SerializeField] private bool isInTargetZone;
     private Vector3 targetPos;
     private int defaultTargetValue;
     private Sprite[] sprites;
     private SpriteRenderer spriteRenderer;
     public GameObject stageManager;
-    public DeckManager deckManager;
 
     void Awake()
     {
         cam = Camera.main; // 메인 카메라 참조
         defaultPos = transform.position;
         stageManager = GameObject.Find("Stage Manager");
-        deckManager = stageManager.GetComponent<DeckManager>();
     }
     void OnEnable()
     {
-        cardDraw();
-
         // 스프라이트 로드
         sprites = Resources.LoadAll<Sprite>("Sprites/kenney_playing-cards-pack/PNG/Cards (large)");
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
-        // 스프라이트 인덱스 계산
+    public void Initialize(Type cardType, int cardValue)
+    {
+        type = cardType;
+        value = cardValue;
+
+        // 스프라이트 로드
+        if (sprites == null || sprites.Length == 0)
+        {
+            sprites = Resources.LoadAll<Sprite>("Sprites/kenney_playing-cards-pack/PNG/Cards (large)");
+        }
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
         int spriteIndex = GetSpriteIndex(type, value);
-        
-        // 스프라이트 적용
+
         if (spriteIndex >= 0 && spriteIndex < sprites.Length)
         {
             spriteRenderer.sprite = sprites[spriteIndex];
@@ -44,25 +56,6 @@ public class PlayerCard : MonoBehaviour
         {
             Debug.LogError("잘못된 스프라이트 인덱스: " + spriteIndex);
         }
-    }
-
-    private void cardDraw(){
-        StartCoroutine(drawCourutine());
-    }
-    IEnumerator drawCourutine(){
-        yield return new WaitForSeconds(0.5f);
-        // 카드 타입과 숫자 설정
-        while(true)
-        {
-            type = (Type)Random.Range(0, 4);
-            value = Random.Range(1, 11);
-            if(deckManager.deck[(int)type][value]>0){
-                break;
-            }
-        }
-        type = (Type)Random.Range(0, 4);
-        value = Random.Range(1, 11);
-        deckManager.CardDrawed(type,value);
     }
 
     private int GetSpriteIndex(Type cardType, int cardValue)
@@ -78,7 +71,7 @@ public class PlayerCard : MonoBehaviour
         return baseIndex + (cardValue - 1);
     }
 
-    
+
 
     void OnMouseDown()
     {
@@ -92,7 +85,7 @@ public class PlayerCard : MonoBehaviour
 
     void OnMouseUp()
     {
-        if(isInTargetZone)
+        if (isInTargetZone)
         {
             ClearTargetZone();
             transform.position = targetPos;
@@ -110,7 +103,7 @@ public class PlayerCard : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CardZone cardZone = collision.GetComponent<CardZone>();
-        if (collision.tag== "TargetZone" && cardZone.getType() == type) // 특정 태그를 가진 오브젝트와 충돌 시
+        if (collision.tag == "TargetZone" && cardZone.getType() == type) // 특정 태그를 가진 오브젝트와 충돌 시
         {
             isInTargetZone = true;
             targetPos = collision.transform.position;
@@ -120,32 +113,32 @@ public class PlayerCard : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision)
-{
-    CardZone cardZone = collision.GetComponent<CardZone>();
-    if (collision.tag == "TargetZone" && cardZone.getType() == type)
     {
-        isInTargetZone = false;
-
-        // **만약 TargetZone에 남아 있는 다른 카드가 없다면 값 복구**
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(collision.transform.position, 0.1f);
-        bool otherCardExists = false;
-
-        foreach (Collider2D col in colliders)
+        CardZone cardZone = collision.GetComponent<CardZone>();
+        if (collision.tag == "TargetZone" && cardZone.getType() == type)
         {
-            PlayerCard existingCard = col.GetComponent<PlayerCard>();
-            if (existingCard != null && existingCard != this)
+            isInTargetZone = false;
+
+            // **만약 TargetZone에 남아 있는 다른 카드가 없다면 값 복구**
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(collision.transform.position, 0.1f);
+            bool otherCardExists = false;
+
+            foreach (Collider2D col in colliders)
             {
-                otherCardExists = true;
-                break;
+                PlayerCard existingCard = col.GetComponent<PlayerCard>();
+                if (existingCard != null && existingCard != this)
+                {
+                    otherCardExists = true;
+                    break;
+                }
+            }
+
+            if (!otherCardExists)
+            {
+                cardZone.cardValue = defaultTargetValue;
             }
         }
-
-        if (!otherCardExists) 
-        {
-            cardZone.cardValue = defaultTargetValue;
-        }
     }
-}
     void ClearTargetZone()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(targetPos, 0.1f); // targetZone 근처에 있는 오브젝트 찾기
@@ -163,8 +156,13 @@ public class PlayerCard : MonoBehaviour
     {
         transform.position = defaultPos;
     }
-    public void ReDraw(){
+    public void ReDraw()
+    {
         gameObject.SetActive(false);
         gameObject.SetActive(true);
+    }
+    public void destroyCard()
+    {
+        Destroy(gameObject);
     }
 }

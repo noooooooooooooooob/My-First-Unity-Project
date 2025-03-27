@@ -9,8 +9,10 @@ public class Player : MonoBehaviour
     public HPController hPController;
     public int buff = 0;
     public int defence = 0;
+    public int multiply = 1;
     public TextMeshProUGUI buffText;
     public TextMeshProUGUI defenceText;
+    public TextMeshProUGUI multiplyText;
 
     void Start(){
         HPSkillController = GameObject.Find("HPSkillController");
@@ -48,5 +50,10 @@ public class Player : MonoBehaviour
     {
         defence = value;
         defenceText.text = "Defence : " + defence;
+    }
+    public void setMultiply(int value)
+    {
+        multiply = value;
+        multiplyText.text = "X " + multiply;
     }
 }
