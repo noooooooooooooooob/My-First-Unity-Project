@@ -4,17 +4,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DeckData", menuName = "ScriptableObjects/DeckData")]
 public class DeckData : ScriptableObject
 {
-    public List<Card> playerDeck = new List<Card>();
+    public List<Card> playerDeck = new List<Card>(); // 신 바뀔 때마다 initialize
+    public List<Card> Deck; // 현재 카드 덱
 
-    public void InitializeDeck()
-    {
-        playerDeck.Clear();
+    void OnEnable() {
+    if (Deck == null || Deck.Count == 0) { 
+        Deck = new List<Card>();
         for (int suit = 0; suit < 4; suit++)
         {
             for (int value = 1; value <= 10; value++)
             {
-                playerDeck.Add(new Card((Type)suit, value));
+                Deck.Add(new Card((Type)suit, value));
             }
+        }
+        Debug.Log("✅ Deck 초기화 완료!");
+    }
+}
+    public void InitializeDeck()
+    {
+        playerDeck.Clear();
+        foreach (var card in Deck)
+        {
+            playerDeck.Add(card);
         }
         ShuffleDeck();
     }
@@ -31,11 +42,11 @@ public class DeckData : ScriptableObject
     }
     public void AddCard(Card newCard)
     {
-        playerDeck.Add(newCard);
+        Deck.Add(newCard);
     }
 
     public void RemoveCard(Card cardToRemove)
     {
-        playerDeck.Remove(cardToRemove);
+        Deck.Remove(cardToRemove);
     }
 }

@@ -53,7 +53,6 @@ public class DeckManager : MonoBehaviour
         return new List<PlayerCard>(currentRoundCards);
     }
 
-    // ✅ 라운드 종료 후 카드 삭제
     public void ResetRound()
     {
         foreach (var card in currentRoundCards)
