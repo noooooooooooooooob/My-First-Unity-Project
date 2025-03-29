@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
         HPSkillController = GameObject.Find("HPSkillController");
         hPController = HPSkillController.GetComponent<HPController>();
         skillManager = HPSkillController.GetComponent<SkillManager>();
+        setBuff(0);
+        setDefence(0);
     }
     
     void Update()

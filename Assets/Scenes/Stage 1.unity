@@ -1447,6 +1447,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7449119138883341591, guid: 016e394734c4a16489b93c22a6d266d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8597756294596177180, guid: 016e394734c4a16489b93c22a6d266d0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 391385970}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2302,6 +2310,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762699727}
   m_CullTransparentMesh: 1
+--- !u!1 &926049772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7449119138883341591, guid: 016e394734c4a16489b93c22a6d266d0, type: 3}
+  m_PrefabInstance: {fileID: 452079412}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &952430362
 GameObject:
   m_ObjectHideFlags: 0
@@ -2539,6 +2552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 1328062904}
+  gameClearUI: {fileID: 926049772}
 --- !u!1 &1041858539
 GameObject:
   m_ObjectHideFlags: 0
@@ -2883,6 +2897,7 @@ MonoBehaviour:
   bestHand: High Card
   bestRank: 1
   player: {fileID: 0}
+  deckManager: {fileID: 1325267416}
 --- !u!114 &1325267416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2895,6 +2910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bce48ce2c3d3f441877cca57a4a44c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deckData: {fileID: 11400000, guid: ad9303f77c8513142924bd190b520dcc, type: 2}
   cardPrefab: {fileID: 8050752525911452417, guid: 50c9a0835405fe141b0b69681235cb2a, type: 3}
   drawPosition:
   - {fileID: 422324910}

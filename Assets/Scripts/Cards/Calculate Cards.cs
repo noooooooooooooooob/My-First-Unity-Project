@@ -5,15 +5,18 @@ using UnityEngine;
 public class CalculateCards : MonoBehaviour
 {
     Dictionary<Type, List<int>> cardTypeNumbers = new Dictionary<Type, List<int>>();
+    private List<PlayerCard> currentRoundCards = new List<PlayerCard>(); // 현재 라운드 카드, 오류제거용
     // 족보 우선순위 설정
     public string bestHand = "High Card"; // 기본값
     public int bestRank = 1; // 기본값 (가장 낮은 족보)
     // 테스트 플레이어
     public GameObject player;
+    public DeckManager deckManager;
 
     private void ResetCalculate()
     {
         cardTypeNumbers.Clear();
+        currentRoundCards.Clear();
     }
 
     void Start() // Test
@@ -22,7 +25,7 @@ public class CalculateCards : MonoBehaviour
 
         // 테스트 플레이어
         player = GameObject.Find("Player");
-        
+
     }
     void Update()
     {
@@ -30,44 +33,31 @@ public class CalculateCards : MonoBehaviour
         player.GetComponent<Player>().setMultiply(bestRank);
     }
 
+
     public int CalculateAllCards() // 족보에 따른 배수를 반환
     {
-        ResetCalculate(); // 초기화
+        List<PlayerCard> currentRoundCards = deckManager.GetCurrentRoundCards(); // 현재 라운드 카드만 가져옴
 
-        PlayerCard[] allCards = FindObjectsOfType<PlayerCard>();
-        if (allCards.Length < 1)
+        if (currentRoundCards.Count < 1)
         {
             Debug.Log("카드가 없습니다.");
             return 0;
         }
 
-        // 카드 정보를 Dictionary에 저장
-        foreach (PlayerCard card in allCards)
+        Dictionary<Type, List<int>> cardTypeNumbers = new Dictionary<Type, List<int>>();
+
+        foreach (PlayerCard card in currentRoundCards)
         {
-            if (card.value != 0)
+            if (!cardTypeNumbers.ContainsKey(card.type))
             {
-                if (!cardTypeNumbers.ContainsKey(card.type))
-                {
-                    cardTypeNumbers[card.type] = new List<int>();
-                }
-                cardTypeNumbers[card.type].Add(card.value);
-                Debug.Log("카드 정보: " + card.type + " " + card.value);
+                cardTypeNumbers[card.type] = new List<int>();
             }
+            cardTypeNumbers[card.type].Add(card.value);
         }
 
-        foreach (var pair in cardTypeNumbers)
-        {
-            foreach (var value in pair.Value)
-            {
-                Debug.Log($"카드 타입: {pair.Key}, 숫자: {value}");
-            }
-        }
-
-
-        // 가능한 모든 조합에서 최상의 족보 찾기
-        string bestHand = FindBestHand(allCards.ToList());
+        string bestHand = FindBestHand(currentRoundCards);
         Debug.Log($"최고의 족보: {bestHand} /  BEST RANK: {bestRank}");
-        
+
         return bestRank;
     }
 

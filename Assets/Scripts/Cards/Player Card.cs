@@ -156,11 +156,6 @@ public class PlayerCard : MonoBehaviour
     {
         transform.position = defaultPos;
     }
-    public void ReDraw()
-    {
-        gameObject.SetActive(false);
-        gameObject.SetActive(true);
-    }
     public void destroyCard()
     {
         Destroy(gameObject);
