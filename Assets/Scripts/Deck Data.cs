@@ -8,18 +8,18 @@ public class DeckData : ScriptableObject
     public List<Card> Deck; // 현재 카드 덱
 
     void OnEnable() {
-    if (Deck == null || Deck.Count == 0) { 
-        Deck = new List<Card>();
-        for (int suit = 0; suit < 4; suit++)
-        {
-            for (int value = 1; value <= 10; value++)
+        if (Deck == null || Deck.Count == 0) { 
+            Deck = new List<Card>();
+            for (int suit = 0; suit < 4; suit++)
             {
-                Deck.Add(new Card((Type)suit, value));
+                for (int value = 1; value <= 10; value++)
+                {
+                    Deck.Add(new Card((Type)suit, value));
+                }
             }
+            Debug.Log("✅ Deck 초기화 완료!");
         }
-        Debug.Log("✅ Deck 초기화 완료!");
     }
-}
     public void InitializeDeck()
     {
         playerDeck.Clear();

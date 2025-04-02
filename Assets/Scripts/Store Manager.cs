@@ -6,11 +6,11 @@ public class StoreManager : MonoBehaviour
 {
     public GameObject[] cards;
     private Sprite[] sprites;
-    public cardtype[] cardtypes;
+    public Card[] card;
 
     void Start()
     {
-        cardtypes = new cardtype[cards.Count()];
+        card = new Card[cards.Count()];
         sprites = Resources.LoadAll<Sprite>("Sprites/kenney_playing-cards-pack/PNG/Cards (large)");
         
         foreach (GameObject card in cards)
@@ -20,13 +20,3 @@ public class StoreManager : MonoBehaviour
     }
 }
 
-public class cardtype
-{
-    public Type type;
-    public int value;
-    public cardtype(Type type, int value)
-    {
-        this.type = type;
-        this.value = value;
-    }
-}
