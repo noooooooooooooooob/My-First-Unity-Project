@@ -37,6 +37,7 @@ public class HPController : MonoBehaviour
 	// 플레이어가 대미지를 받으면 대미지 값을 전달 받아 HP에 반영합니다.
     public void GetDamage(int damage)
     {
+        if(damage < 0) return;
         Hp -= damage;
         hpBar.value = Hp;
         Text.text = _hp + " / " + _maxHp;

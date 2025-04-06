@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
   fadeDuration: 1
+  deckData: {fileID: 11400000, guid: ad9303f77c8513142924bd190b520dcc, type: 2}

@@ -6,6 +6,7 @@ public class SceneManager : MonoBehaviour
 {
     public CanvasGroup canvasGroup; // 페이드 효과를 위한 CanvasGroup
     public float fadeDuration = 1.0f; // 페이드 지속 시간
+    public DeckData deckData; // 덱 데이터
 
     void Start()
     {
@@ -15,6 +16,9 @@ public class SceneManager : MonoBehaviour
     public void ChangeScene(string sceneName)
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        if(sceneName == "Main Menu")
+            deckData.makeNewDeck(); // 메인 메뉴로 돌아갈 때 덱 초기화
+
     }
 
     IEnumerator FadeIn()

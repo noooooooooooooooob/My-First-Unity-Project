@@ -18,8 +18,7 @@ public class Player : MonoBehaviour
         HPSkillController = GameObject.Find("HPSkillController");
         hPController = HPSkillController.GetComponent<HPController>();
         skillManager = HPSkillController.GetComponent<SkillManager>();
-        setBuff(0);
-        setDefence(0);
+        endTurn();
     }
     
     void Update()
@@ -57,5 +56,10 @@ public class Player : MonoBehaviour
     {
         multiply = value;
         multiplyText.text = "X " + multiply;
+    }
+    public void endTurn()
+    {
+        setBuff(0);
+        setDefence(0);
     }
 }

@@ -8,6 +8,10 @@ public class DeckData : ScriptableObject
     public List<Card> Deck; // 현재 카드 덱
 
     void OnEnable() {
+        makeNewDeck();
+    }
+    public void makeNewDeck()
+    {
         if (Deck == null || Deck.Count == 0) { 
             Deck = new List<Card>();
             for (int suit = 0; suit < 4; suit++)
@@ -43,6 +47,7 @@ public class DeckData : ScriptableObject
     public void AddCard(Card newCard)
     {
         Deck.Add(newCard);
+        Debug.Log("🃏 카드 추가: " + newCard.type + " " + newCard.value);
     }
 
     public void RemoveCard(Card cardToRemove)

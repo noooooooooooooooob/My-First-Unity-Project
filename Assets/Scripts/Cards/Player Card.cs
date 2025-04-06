@@ -16,12 +16,15 @@ public class PlayerCard : MonoBehaviour
     private Sprite[] sprites;
     private SpriteRenderer spriteRenderer;
     public GameObject stageManager;
+    public GameObject Player;
+    public GameObject calculateCards;
 
     void Awake()
     {
         cam = Camera.main; // 메인 카메라 참조
         defaultPos = transform.position;
         stageManager = GameObject.Find("Stage Manager");
+        Player = GameObject.Find("Player");
     }
     void OnEnable()
     {
@@ -89,8 +92,31 @@ public class PlayerCard : MonoBehaviour
         {
             ClearTargetZone();
             transform.position = targetPos;
+            if (type == Type.CLOVER)
+            {
+                Player.GetComponent<Player>().setBuff(value * stageManager.GetComponent<CalculateCards>().bestRank);
+                if(Player.GetComponent<Player>().defence != 0)
+                    Player.GetComponent<Player>().setDefence(Player.GetComponent<Player>().defence * stageManager.GetComponent<CalculateCards>().bestRank + Player.GetComponent<Player>().buff);
+            }
+            if (type == Type.SPADE)
+            {
+                Player.GetComponent<Player>().setDefence(value * stageManager.GetComponent<CalculateCards>().bestRank + Player.GetComponent<Player>().buff);
+            }
         }
-        else transform.position = defaultPos;
+        else
+        {
+            transform.position = defaultPos;
+            if (type == Type.CLOVER)
+            {
+                Player.GetComponent<Player>().setDefence(Player.GetComponent<Player>().defence / Player.GetComponent<Player>().buff);
+                Player.GetComponent<Player>().setBuff(0);
+            }
+            if (type == Type.SPADE)
+            {
+                Player.GetComponent<Player>().setDefence(0);
+            }
+        }
+        
     }
 
     Vector3 GetMouseWorldPos()
@@ -103,7 +129,7 @@ public class PlayerCard : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CardZone cardZone = collision.GetComponent<CardZone>();
-        if (collision.tag == "TargetZone" && cardZone.getType() == type) // 특정 태그를 가진 오브젝트와 충돌 시
+        if (collision.tag == "TargetZone" && cardZone.getType(type)) // 특정 태그를 가진 오브젝트와 충돌 시
         {
             isInTargetZone = true;
             targetPos = collision.transform.position;
@@ -115,7 +141,7 @@ public class PlayerCard : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         CardZone cardZone = collision.GetComponent<CardZone>();
-        if (collision.tag == "TargetZone" && cardZone.getType() == type)
+        if (collision.tag == "TargetZone" && cardZone.getType(type))
         {
             isInTargetZone = false;
 

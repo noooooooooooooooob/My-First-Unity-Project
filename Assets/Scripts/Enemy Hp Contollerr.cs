@@ -6,6 +6,7 @@ public class EnemyHpContoller : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI Text; // HP 표시를 위한 Text
     public GameObject gameClearUI;
+    public GameObject Player;
     // 플레이어의 HP
     private int _hp;
     private int _maxHp = 100; // HP의 최대값을 따로 설정
@@ -17,6 +18,7 @@ public class EnemyHpContoller : MonoBehaviour
     }
     private void Awake()
     {
+        Player = GameObject.Find("Player");
     	// HP 값을 초기 세팅합니다.
         _hp = 100;
 
@@ -31,7 +33,7 @@ public class EnemyHpContoller : MonoBehaviour
     }
     public void GetDamage(int damage)
     {
-        Hp -= damage;
+        Hp -= (damage - Player.GetComponent<Player>().defence);
         Text.text = _hp + " / " + _maxHp;
         if(Hp==0){
             EnemyDie();

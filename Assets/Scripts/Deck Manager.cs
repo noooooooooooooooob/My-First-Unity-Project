@@ -8,6 +8,8 @@ public class DeckManager : MonoBehaviour
     public Transform[] drawPosition;
     private List<PlayerCard> currentRoundCards = new List<PlayerCard>();
     int cnt = 0;
+    public GameObject gameOverUI;
+    public GameObject gameClearUI;
 
     void Awake()
     {
@@ -23,6 +25,8 @@ public class DeckManager : MonoBehaviour
         if (deckData.playerDeck.Count == 0)
         {
             Debug.Log("Deck is empty!");
+            if(gameClearUI.activeSelf == false)
+                gameOverUI.SetActive(true);
             return;
         }
 
